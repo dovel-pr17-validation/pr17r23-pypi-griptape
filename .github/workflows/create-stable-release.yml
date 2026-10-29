@@ -1,0 +1,29 @@
+name: Create Stable Release
+
+on:
+  push:
+    tags:
+      - v*
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to release (e.g. v1.10.0)"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Release pushed tag
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Create release
+        uses: softprops/action-gh-release@v3
+        with:
+          token: ${{ secrets.GH_RELEASE_PAT }}
+          tag_name: ${{ inputs.tag || github.ref_name }}
+          generate_release_notes: true
+          make_latest: true
+          prerelease: false
+

@@ -1,0 +1,17 @@
+from __future__ import annotations
+
+import uuid
+
+from attrs import Factory, define, field
+
+from griptape.mixins.serializable_mixin import SerializableMixin
+
+
+@define(kw_only=True)
+class Reference(SerializableMixin):
+    id: str = field(default=Factory(lambda: uuid.uuid4().hex), metadata={"serializable": True})
+    title: str = field(metadata={"serializable": True})
+    authors: list[str] = field(factory=list, metadata={"serializable": True})
+    source: str | None = field(default=None, metadata={"serializable": True})
+    year: str | None = field(default=None, metadata={"serializable": True})
+    url: str | None = field(default=None, metadata={"serializable": True})
